@@ -40,6 +40,30 @@ export function createJob(repository) {
   };
 }
 
+export const addReviewSchema = Joi.object({
+  score: Joi.number().integer().min(1).max(5).required(),
+  comment: Joi.string(),
+});
+
+export function addReviewToJob(repository) {
+  return async (req, res) => {
+    const { session, body } = req;
+    const { user_id } = session;
+    const { jobId } = req.params;
+
+    // create job
+    const review = await repository.reviews.createReview({
+      job_id: jobId,
+      score: body.score,
+      comment: body.comment,
+    });
+
+    // TODO: notification
+
+    return res.status(201).send(review);
+  };
+}
+
 export function deleteJob(repository) {
   return async (req, res) => {
     const { session } = req;

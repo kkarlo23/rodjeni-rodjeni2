@@ -15,14 +15,15 @@ export function changePassword(repository) {
 }
 
 export const updateUserInfoSchema = Joi.object({
-  username: Joi.string().min(3).max(30),
-  full_name: Joi.string().min(3),
-  email: Joi.string().email(),
+  username: Joi.string().min(3).max(30).required(),
+  full_name: Joi.string().min(3).required(),
+  email: Joi.string().email().required(),
   phone: Joi.string()
     .pattern(/^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)
     .messages({
       "string.pattern.base": "Must be a valid phone number",
-    }),
+    })
+    .required(),
 });
 export function updateUserInfo(repository) {
   return async (req, res) => {

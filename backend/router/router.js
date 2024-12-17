@@ -1,7 +1,8 @@
 import { login, loginSchema, logout } from "./handlers/auth.js";
-import { createJob, createJobSchema, deleteJob, updateWorkingHour, updateWorkingHourSchema } from "./handlers/jobs.js";
+import { addReviewSchema, createJob, createJobSchema, deleteJob, updateWorkingHour, updateWorkingHourSchema } from "./handlers/jobs.js";
 import { getNotifications } from "./handlers/notifications.js";
 import { register, registerSchema } from "./handlers/register.js";
+import { createReservationSchema } from "./handlers/reservations.js";
 import { changePassword, changePasswordSchema, updateUserInfo, updateUserInfoSchema } from "./handlers/users.js";
 import { checkAuth } from "./middlewares.js/checkAuth.js";
 import { validatePayload } from "./middlewares.js/validator.js";
@@ -27,4 +28,12 @@ export async function createRouter(app, repository) {
     updateWorkingHour(repository)
   );
   app.delete("/job/:jobId", checkAuth(repository), deleteJob(repository));
+  app.post("/job/:jobId/add-review", checkAuth(repository), validatePayload(addReviewSchema), addReviewToJob(repository));
+
+  // reservations
+  app.post("/reservation", checkAuth(repository), validatePayload(createReservationSchema), createReservation(repository));
+
+  app.post("/reservation/:reservationId/accept", checkAuth(repository), updateReservationStatus(repository, true));
+  app.post("/reservation/:reservationId/deny", checkAuth(repository), updateReservationStatus(repository, false));
+  app.post("/reservation/:reservationId/complete", checkAuth(repository), completeReservation(repository));
 }
