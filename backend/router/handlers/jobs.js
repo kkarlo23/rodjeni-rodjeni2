@@ -13,6 +13,49 @@ function mapWorkingHours(workingHours) {
   return workingHoursMap;
 }
 
+export function getJob(repository) {
+  return async (req, res) => {
+    const query = req.query;
+    const { session } = req;
+    const { user_id } = session;
+    const { jobId } = req.params;
+
+    // create job
+    const job = await repository.jobs.getJobById(jobId);
+
+    const workingHours = await repository.workingHours.getWorkingHoursByJobId(job.id);
+
+    const jobFull = { ...job, working_hours: mapWorkingHours(workingHours) };
+
+    return res.status(200).send(jobFull);
+  };
+}
+
+export const searchJobsSchema = Joi.object({
+  category_id: Joi.number().integer().positive().optional(),
+  county_id: Joi.number().integer().positive().optional(),
+  municipality_id: Joi.number().integer().positive().optional(),
+  keyword: Joi.string().optional(),
+  user_id: Joi.number().integer().positive().optional(),
+});
+
+export function searchJobs(repository) {
+  return async (req, res) => {
+    const query = req.query;
+
+    // create job
+    const jobs = await repository.jobs.searchJobs({
+      category_id: query.category_id,
+      county_id: query.county_id,
+      municipality_id: query.municipality_id,
+      keyword: query.keyword,
+      user_id: query.user_id,
+    });
+
+    return res.status(200).send(jobs);
+  };
+}
+
 export const createJobSchema = Joi.object({
   description: Joi.string().min(3).required(),
   category_id: Joi.number().integer().positive().required(),
@@ -42,7 +85,7 @@ export function createJob(repository) {
 
 export const addReviewSchema = Joi.object({
   score: Joi.number().integer().min(1).max(5).required(),
-  comment: Joi.string(),
+  comment: Joi.string().optional(),
 });
 
 export function addReviewToJob(repository) {
@@ -58,7 +101,7 @@ export function addReviewToJob(repository) {
       comment: body.comment,
     });
 
-    // TODO: notification
+    // TODO: add notifications
 
     return res.status(201).send(review);
   };

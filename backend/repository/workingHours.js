@@ -3,6 +3,12 @@ export class WorkingHours {
     this.db = db;
   }
 
+  async getWorkingHoursByJobId(jobId) {
+    let qry = `SELECT * FROM working_hours WHERE job_id=${jobId};`;
+    const workingHours = await this.db.query(qry);
+    return workingHours.rows;
+  }
+
   async createWorkingHours(jobId) {
     let qry = `INSERT INTO working_hours (job_id, day, hour, emergency) VALUES `;
 

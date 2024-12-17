@@ -1,3 +1,5 @@
+import Joi from "joi";
+
 export const createReservationSchema = Joi.object({
   working_hour_id: Joi.number().integer().positive().required(),
   date: Joi.date().required(),
