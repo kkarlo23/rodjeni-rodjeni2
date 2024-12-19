@@ -1,4 +1,6 @@
 import { login, loginSchema, logout } from "./handlers/auth.js";
+import { getCategories } from "./handlers/categories.js";
+import { getCounties } from "./handlers/counties.js";
 import {
   addReviewSchema,
   addReviewToJob,
@@ -11,6 +13,7 @@ import {
   updateWorkingHour,
   updateWorkingHourSchema,
 } from "./handlers/jobs.js";
+import { getMunicipalities } from "./handlers/municipalities.js";
 import { getNotifications } from "./handlers/notifications.js";
 import { register, registerSchema } from "./handlers/register.js";
 import { completeReservation, createReservation, createReservationSchema, updateReservationStatus } from "./handlers/reservations.js";
@@ -49,4 +52,8 @@ export async function createRouter(app, repository) {
   app.post("/reservation/:reservationId/accept", checkAuth(repository), updateReservationStatus(repository, true));
   app.post("/reservation/:reservationId/deny", checkAuth(repository), updateReservationStatus(repository, false));
   app.post("/reservation/:reservationId/complete", checkAuth(repository), completeReservation(repository));
+
+  app.get("/counties", checkAuth(repository), getCounties(repository));
+  app.get("/municipalities", checkAuth(repository), getMunicipalities(repository));
+  app.get("/categories", checkAuth(repository), getCategories(repository));
 }

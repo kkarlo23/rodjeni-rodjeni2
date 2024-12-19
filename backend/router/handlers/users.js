@@ -3,7 +3,7 @@ import { hashPassword } from "../../utils/hash.js";
 
 export const changePasswordSchema = Joi.object({
   password: Joi.string().min(3).required(),
-  confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
+  confirm_password: Joi.string().valid(Joi.ref("password")).required(),
 });
 export function changePassword(repository) {
   return async (req, res) => {
