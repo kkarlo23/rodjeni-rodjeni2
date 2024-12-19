@@ -1,0 +1,9 @@
+.modal_wrapper {
+   width: 450px;
+    height: 450px;
+    background-color: var(--color-two); 
+    border: 2px solid var(--color-four); 
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    padding: 20px;
+}

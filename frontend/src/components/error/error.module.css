@@ -1,0 +1,89 @@
+.wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, var(--color-two), var(--color-one));
+}
+
+.container {
+   width: auto;
+   height: auto;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   gap: 20px;
+}
+
+.icon_container {
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon_container svg {
+    width: 25px;
+    height: 25px;
+    color: var(--color-six);
+}
+
+.button_container {
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.button {
+    background: var(--color-three);
+    color: var(--color-two);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.error_description_container,
+.path_indicator_container,
+.header_container {
+    width: auto;
+    height: auto;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+  color: var(--color-four);
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+ .path_indicator {
+    color: var(--color-four);
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.path_indicator span {
+    color: var(--color-six);
+    font-weight: 600;
+}
+
+.error_description {
+    color: var(--color-four);
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+}
