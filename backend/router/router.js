@@ -1,4 +1,4 @@
-import { login, loginSchema, logout } from "./handlers/auth.js";
+import { getDummySession, login, loginSchema, logout } from "./handlers/auth.js";
 import { getCategories } from "./handlers/categories.js";
 import { getCounties } from "./handlers/counties.js";
 import {
@@ -22,6 +22,7 @@ import { checkAuth } from "./middlewares.js/checkAuth.js";
 import { validatePayload, validateQuery } from "./middlewares.js/validator.js";
 
 export async function createRouter(app, repository) {
+  app.get("/getDummySession", getDummySession(repository));
   // auth
   app.post("/login", validatePayload(loginSchema), login(repository));
   app.post("/logout", checkAuth(repository), logout());

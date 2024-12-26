@@ -5,8 +5,10 @@ function mapWorkingHours(workingHours) {
   for (const workingHour of workingHours) {
     if (!workingHoursMap[workingHour.day]) workingHoursMap[workingHour.day] = {};
     workingHoursMap[workingHour.day][workingHour.hour] = {
+      id: workingHour.id,
       available: workingHour.available,
       emergency: workingHour.emergency,
+      reserved: workingHour.reserved,
     };
   }
 
@@ -17,15 +19,16 @@ export function getJob(repository) {
   return async (req, res) => {
     const query = req.query;
     const { session } = req;
-    const { user_id } = session;
+    // const { user_id } = session;
     const { jobId } = req.params;
 
     // create job
     const job = await repository.jobs.getJobById(jobId);
 
     const workingHours = await repository.workingHours.getWorkingHoursByJobId(job.id);
+    const reservations = await repository.reservations.getReservationsByJobId(job.id);
 
-    const jobFull = { ...job, working_hours: mapWorkingHours(workingHours) };
+    const jobFull = { ...job, reservations, working_hours: mapWorkingHours(workingHours) };
 
     return res.status(200).send(jobFull);
   };
@@ -76,8 +79,9 @@ export function createJob(repository) {
     });
 
     const workingHours = await repository.workingHours.createWorkingHours(job.id);
+    const reservations = await repository.reservations.getReservationsByJobId(job.id);
 
-    const jobFull = { ...job, working_hours: mapWorkingHours(workingHours) };
+    const jobFull = { ...job, reservations, working_hours: mapWorkingHours(workingHours) };
 
     return res.status(201).send(jobFull);
   };

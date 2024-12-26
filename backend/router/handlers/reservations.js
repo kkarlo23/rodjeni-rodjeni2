@@ -8,9 +8,9 @@ export const createReservationSchema = Joi.object({
 export function createReservation(repository) {
   return async (req, res) => {
     const { session, body } = req;
-    const { userId } = session;
+    const { user_id } = session;
 
-    await repository.reservations.createReservation({ user_id: userId, working_hour_id: body.working_hour_id, date: body.date });
+    await repository.reservations.createReservation({ user_id: user_id, working_hour_id: body.working_hour_id, date: body.date });
 
     // TODO: create notification
 
